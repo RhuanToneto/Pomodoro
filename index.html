@@ -12,6 +12,18 @@
     <main class="app-shell">
       <header class="topbar">
         <button
+          class="icon-button history-button"
+          id="history-button"
+          type="button"
+          aria-label="Abrir histórico de ciclos"
+          title="Histórico de ciclos"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="5" width="16" height="15" rx="2"/>
+            <path d="M8 3v4M16 3v4M4 10h16M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/>
+          </svg>
+        </button>
+        <button
           class="icon-button theme-toggle"
           id="theme-toggle"
           type="button"
@@ -70,7 +82,7 @@
             </button>
           </div>
           <div class="pomodoro-total" aria-live="polite">
-            <span><strong id="pomodoro-total">0</strong> ciclos concluídos</span>
+            <span><strong id="pomodoro-total">0</strong> <span id="pomodoro-total-label">ciclos diários concluídos</span></span>
           </div>
         </div>
       </section>
@@ -112,6 +124,25 @@
         <button class="reset-settings-button" id="reset-settings" type="button">Restaurar padrões</button>
         <button class="primary-button save-button" value="default" type="submit">Salvar ajustes</button>
       </form>
+    </dialog>
+
+    <dialog class="history-dialog" id="history-dialog" aria-labelledby="history-title">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Seu ritmo</p>
+          <h2 id="history-title">Histórico de ciclos</h2>
+        </div>
+        <button class="close-button" id="close-history" type="button" aria-label="Fechar histórico">×</button>
+      </div>
+      <div class="history-list" id="history-list"></div>
+      <button class="clear-history-button" id="clear-history" type="button">Limpar histórico</button>
+      <div class="history-confirmation" id="history-confirmation" hidden>
+        <p>Apagar todos os ciclos registrados?</p>
+        <div>
+          <button class="history-cancel-button" id="cancel-clear-history" type="button">Cancelar</button>
+          <button class="history-confirm-button" id="confirm-clear-history" type="button">Apagar</button>
+        </div>
+      </div>
     </dialog>
   </body>
 </html>

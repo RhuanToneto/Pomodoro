@@ -9,6 +9,7 @@ const STORAGE_KEYS = {
   session: "pomodoro-session",
   completed: "pomodoro-completed",
   cycles: "pomodoro-cycles",
+  history: "pomodoro-history",
   longBreakDue: "pomodoro-long-break-due",
   darkMode: "pomodoro-dark-mode"
 };
@@ -37,6 +38,15 @@ const elements = {
   longSeconds: document.querySelector("#long-seconds"),
   resetSettings: document.querySelector("#reset-settings"),
   pomodoroTotal: document.querySelector("#pomodoro-total"),
+  pomodoroTotalLabel: document.querySelector("#pomodoro-total-label"),
+  historyButton: document.querySelector("#history-button"),
+  historyDialog: document.querySelector("#history-dialog"),
+  closeHistory: document.querySelector("#close-history"),
+  clearHistory: document.querySelector("#clear-history"),
+  historyConfirmation: document.querySelector("#history-confirmation"),
+  cancelClearHistory: document.querySelector("#cancel-clear-history"),
+  confirmClearHistory: document.querySelector("#confirm-clear-history"),
+  historyList: document.querySelector("#history-list"),
   currentYear: document.querySelector("#current-year")
 };
 
@@ -54,6 +64,7 @@ let intervalId = null;
 let session = Number(localStorage.getItem(STORAGE_KEYS.session) || 1);
 let completedSessions = Number(localStorage.getItem(STORAGE_KEYS.completed) || 0);
 let completedCycles = Number(localStorage.getItem(STORAGE_KEYS.cycles) || 0);
+let cycleHistory = readStorage(STORAGE_KEYS.history, []);
 let longBreakDue = localStorage.getItem(STORAGE_KEYS.longBreakDue) === "true";
 let darkMode = localStorage.getItem(STORAGE_KEYS.darkMode) !== "false";
 let audioContext = null;
@@ -85,6 +96,22 @@ function formatTime(seconds) {
   return `${minutes}:${remainingSeconds}`;
 }
 
+function formatFocusDuration(seconds) {
+  const totalMinutes = Math.floor(seconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  const remainingSeconds = seconds % 60;
+  const parts = [];
+
+  if (hours) parts.push(`${hours} ${hours === 1 ? "hora" : "horas"}`);
+  if (minutes) parts.push(`${minutes} ${minutes === 1 ? "minuto" : "minutos"}`);
+  if (remainingSeconds) parts.push(`${remainingSeconds} ${remainingSeconds === 1 ? "segundo" : "segundos"}`);
+  if (!parts.length) return "0 minutos";
+  if (parts.length === 1) return parts[0];
+  if (parts.length === 2) return parts.join(" e ");
+  return `${parts.slice(0, -1).join(", ")} e ${parts[parts.length - 1]}`;
+}
+
 function updateModeDurations() {
   modes.pomodoro.duration = settings.focus.minutes * 60 + settings.focus.seconds;
   modes.short.duration = settings.short.minutes * 60 + settings.short.seconds;
@@ -95,14 +122,83 @@ function updateModeDurations() {
 function renderTimer() {
   const total = modes[mode].duration;
   const time = formatTime(remaining);
+  completedCycles = getCompletedCyclesToday();
 
   elements.display.textContent = time;
   elements.display.dateTime = `PT${Math.floor(remaining / 60)}M${remaining % 60}S`;
   elements.label.textContent = modes[mode].label;
   elements.round.textContent = getRoundLabel();
   elements.pomodoroTotal.textContent = completedCycles;
+  elements.pomodoroTotalLabel.textContent = completedCycles === 1
+    ? "ciclo diário concluído"
+    : "ciclos diários concluídos";
   elements.ring.style.setProperty("--progress", `${((total - remaining) / total) * 360}deg`);
   document.title = `${time} · Foco`;
+}
+
+function getTodayDate() {
+  return getLocalDateTime().date;
+}
+
+function getCompletedCyclesToday() {
+  const today = getTodayDate();
+  return cycleHistory.filter((entry) => entry.date === today).length;
+}
+
+function getLocalDateTime() {
+  const now = new Date();
+  const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const time = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  return { date, time };
+}
+
+function recordCompletedCycle() {
+  cycleHistory.push({
+    ...getLocalDateTime(),
+    focusSeconds: modes.pomodoro.duration * 4
+  });
+  save(STORAGE_KEYS.history, cycleHistory);
+}
+
+function formatHistoryDate(date) {
+  const [year, month, day] = date.split("-");
+  return `${day}/${month}/${year}`;
+}
+
+function renderHistory() {
+  elements.historyList.replaceChildren();
+
+  if (!cycleHistory.length) {
+    const empty = document.createElement("p");
+    empty.className = "history-empty";
+    empty.textContent = "Nenhum ciclo completo registrado ainda.";
+    elements.historyList.appendChild(empty);
+    return;
+  }
+
+  const days = cycleHistory.reduce((grouped, entry) => {
+    grouped[entry.date] ??= [];
+    grouped[entry.date].push({
+      time: entry.time,
+      focusSeconds: entry.focusSeconds ?? 0
+    });
+    return grouped;
+  }, {});
+
+  Object.entries(days).reverse().forEach(([date, entries]) => {
+    const totalFocusSeconds = entries.reduce((total, entry) => total + entry.focusSeconds, 0);
+    const item = document.createElement("article");
+    item.className = "history-day";
+    item.innerHTML = `
+      <div class="history-date">${formatHistoryDate(date)}</div>
+      <div class="history-total">${entries.length} ${entries.length === 1 ? "ciclo concluído" : "ciclos concluídos"} - ${formatFocusDuration(totalFocusSeconds)} de foco</div>
+      <div class="history-times">
+        <span>Primeiro ciclo<strong>${entries[0].time}</strong></span>
+        <span>Último ciclo<strong>${entries[entries.length - 1].time}</strong></span>
+      </div>
+    `;
+    elements.historyList.appendChild(item);
+  });
 }
 
 function getRoundLabel() {
@@ -150,7 +246,8 @@ function finishTimer() {
     localStorage.setItem(STORAGE_KEYS.longBreakDue, longBreakDue);
     changeMode(isLongBreak ? "long" : "short");
   } else if (mode === "long" && longBreakDue) {
-    completedCycles += 1;
+    recordCompletedCycle();
+    completedCycles = getCompletedCyclesToday();
     longBreakDue = false;
     save(STORAGE_KEYS.cycles, completedCycles);
     localStorage.setItem(STORAGE_KEYS.longBreakDue, "false");
@@ -182,7 +279,7 @@ function playCompletionSound() {
     oscillator.type = "sine";
     oscillator.frequency.value = frequency;
     gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.exponentialRampToValueAtTime(0.16, time + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.5, time + 0.02);
     gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.14);
     oscillator.connect(gain);
     gain.connect(audioContext.destination);
@@ -358,6 +455,35 @@ elements.taskForm.addEventListener("submit", (event) => {
 });
 
 elements.settingsButton.addEventListener("click", openSettings);
+elements.historyButton.addEventListener("click", () => {
+  renderHistory();
+  elements.historyDialog.showModal();
+});
+elements.closeHistory.addEventListener("click", () => {
+  elements.historyConfirmation.hidden = true;
+  elements.clearHistory.hidden = false;
+  elements.historyDialog.close();
+});
+elements.clearHistory.addEventListener("click", () => {
+  if (!cycleHistory.length && completedCycles === 0) return;
+
+  elements.historyConfirmation.hidden = false;
+  elements.clearHistory.hidden = true;
+});
+elements.cancelClearHistory.addEventListener("click", () => {
+  elements.historyConfirmation.hidden = true;
+  elements.clearHistory.hidden = false;
+});
+elements.confirmClearHistory.addEventListener("click", () => {
+  cycleHistory = [];
+  completedCycles = 0;
+  localStorage.removeItem(STORAGE_KEYS.history);
+  save(STORAGE_KEYS.cycles, completedCycles);
+  elements.pomodoroTotal.textContent = completedCycles;
+  elements.historyConfirmation.hidden = true;
+  elements.clearHistory.hidden = false;
+  renderHistory();
+});
 elements.resetSettings.addEventListener("click", () => {
   restoreDefaults();
 });
@@ -383,3 +509,4 @@ applyTheme();
 elements.currentYear.textContent = new Date().getFullYear();
 renderTimer();
 renderTasks();
+renderHistory();
