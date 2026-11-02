@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Um temporizador Pomodoro simples para manter o foco." />
+    <title>Foco — Pomodoro</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <button
+          class="icon-button theme-toggle"
+          id="theme-toggle"
+          type="button"
+          aria-label="Desligar modo escuro"
+          aria-pressed="true"
+          title="Modo escuro ativado"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/>
+          </svg>
+        </button>
+        <button
+          class="icon-button"
+          id="settings-button"
+          type="button"
+          aria-label="Abrir configurações"
+          title="Configurações"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"/>
+            <circle cx="9" cy="7" r="1.8"/>
+            <circle cx="15" cy="12" r="1.8"/>
+            <circle cx="11" cy="17" r="1.8"/>
+          </svg>
+        </button>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Mantenha o ritmo</p>
+        <h1 id="page-title">Um passo de cada vez.</h1>
+        <p class="subtitle">Concentre-se no que importa agora.</p>
+      </section>
+
+      <section class="timer-card" aria-label="Temporizador Pomodoro">
+        <nav class="mode-tabs" aria-label="Modo do temporizador">
+          <button class="mode-tab is-active" data-mode="pomodoro" type="button">Foco</button>
+          <button class="mode-tab" data-mode="short" type="button">Pausa curta</button>
+          <button class="mode-tab" data-mode="long" type="button">Pausa longa</button>
+        </nav>
+        <div class="timer-area">
+          <div class="timer-ring" id="timer-ring">
+            <div class="timer-inner">
+              <span class="timer-label" id="timer-label">Hora de focar</span>
+              <time class="timer-display" id="timer-display" datetime="PT25M">25:00</time>
+              <span class="timer-round" id="timer-round">Sessão 1 de 4</span>
+            </div>
+          </div>
+          <div class="timer-actions">
+            <button class="primary-button" id="start-button" type="button">
+              <span class="play-icon" aria-hidden="true">▶</span>
+              <span>Começar</span>
+            </button>
+            <button class="reset-button" id="reset-button" type="button">
+              <span class="reset-icon" aria-hidden="true">↻</span>
+              <span>Reiniciar</span>
+            </button>
+          </div>
+          <div class="pomodoro-total" aria-live="polite">
+            <span><strong id="pomodoro-total">0</strong> ciclos concluídos</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="tasks-section" aria-labelledby="tasks-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Seu plano</p>
+            <h2 id="tasks-title">Tarefas de hoje</h2>
+          </div>
+          <span class="task-count" id="task-count">0/0</span>
+        </div>
+        <form class="task-form" id="task-form">
+          <label class="sr-only" for="task-input">Nova tarefa</label>
+          <input id="task-input" type="text" maxlength="100" placeholder="O que você quer realizar?" autocomplete="off" />
+          <button type="submit" aria-label="Adicionar tarefa">+</button>
+        </form>
+        <ul class="task-list" id="task-list" aria-live="polite"></ul>
+        <p class="empty-state" id="empty-state">Adicione uma tarefa para começar seu dia.</p>
+      </section>
+
+      <footer class="footer">
+        <small>© <span id="current-year"></span> Rhuan Toneto</small>
+      </footer>
+    </main>
+
+    <dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
+      <form method="dialog" class="settings-form" id="settings-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">Personalize</p>
+            <h2 id="settings-title">Configurações</h2>
+          </div>
+          <button class="close-button" value="cancel" aria-label="Fechar configurações">×</button>
+        </div>
+        <label>Foco <span class="duration-inputs"><input id="focus-minutes" type="number" min="0" max="60" step="1" value="25" aria-label="Minutos de foco" /><b>min</b><input id="focus-seconds" type="number" min="0" max="60" step="1" value="0" aria-label="Segundos de foco" /><b>seg</b></span></label>
+        <label>Pausa curta <span class="duration-inputs"><input id="short-minutes" type="number" min="0" max="60" step="1" value="5" aria-label="Minutos da pausa curta" /><b>min</b><input id="short-seconds" type="number" min="0" max="60" step="1" value="0" aria-label="Segundos da pausa curta" /><b>seg</b></span></label>
+        <label>Pausa longa <span class="duration-inputs"><input id="long-minutes" type="number" min="0" max="60" step="1" value="15" aria-label="Minutos da pausa longa" /><b>min</b><input id="long-seconds" type="number" min="0" max="60" step="1" value="0" aria-label="Segundos da pausa longa" /><b>seg</b></span></label>
+        <button class="reset-settings-button" id="reset-settings" type="button">Restaurar padrões</button>
+        <button class="primary-button save-button" value="default" type="submit">Salvar ajustes</button>
+      </form>
+    </dialog>
+  </body>
+</html>
