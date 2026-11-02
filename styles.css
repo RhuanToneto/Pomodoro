@@ -111,6 +111,51 @@ h2 { font-size: 28px; letter-spacing: -.04em; }
 .history-cancel-button:hover { color: var(--ink); }
 .history-confirm-button:hover { background: var(--accent-dark); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+@media (min-width: 900px) {
+  body { min-height: 100vh; }
+  .app-shell { width: min(calc(100% - 96px), 1180px); padding: 32px 0 46px; }
+  .topbar { gap: 18px; }
+  .icon-button { width: 58px; height: 58px; }
+  .icon-button svg { width: 28px; }
+  .hero { padding: 58px 0 42px; }
+  h1 { font-size: clamp(58px, 5vw, 78px); }
+  .subtitle { font-size: 20px; }
+  .timer-card { min-height: 0; }
+  .mode-tabs { padding: 20px; }
+  .mode-tab { padding: 13px 25px; font-size: 17px; }
+  .timer-area { padding: 38px 40px 42px; }
+  .timer-ring { width: min(30vw, 360px); height: min(30vw, 360px); }
+  .timer-ring::before { inset: 11px; }
+  .timer-label, .timer-round { font-size: 15px; }
+  .timer-display { font-size: clamp(72px, 7vw, 98px); }
+  .timer-actions { margin-top: 30px; }
+  .primary-button { min-width: 190px; padding: 17px 28px; font-size: 16px; }
+  .reset-button { min-height: 56px; padding: 0 24px; font-size: 16px; }
+  .pomodoro-total { margin-top: 24px; font-size: 15px; }
+  .pomodoro-total strong { font-size: 18px; }
+  .tasks-section { margin-top: 76px; }
+  h2 { font-size: 32px; }
+  .task-count { padding: 8px 14px; font-size: 15px; }
+  .task-form input { padding: 21px 24px; font-size: 18px; }
+  .task-form button { width: 68px; font-size: 34px; }
+  .empty-state { font-size: 16px; }
+  .footer { margin-top: 72px; }
+  .settings-dialog { width: min(calc(100% - 80px), 620px); padding: 44px; }
+  .history-dialog { width: min(calc(100% - 80px), 740px); padding: 44px; }
+  .dialog-heading { margin-bottom: 36px; }
+  .dialog-heading h2 { font-size: 32px; }
+  .settings-form label { padding: 21px 0; font-size: 18px; }
+  .settings-form input { width: 78px; padding: 11px 8px; font-size: 17px; }
+  .duration-inputs { gap: 9px; }
+  .duration-inputs b { font-size: 14px; }
+  .reset-settings-button, .clear-history-button { padding: 17px; font-size: 16px; }
+  .save-button { padding: 20px; }
+  .history-date { font-size: 18px; }
+  .history-total, .history-times { font-size: 16px; }
+  .history-times strong { font-size: 20px; }
+}
+
 :root.dark {
   --ink: #eee5df;
   --muted: #a99b94;
