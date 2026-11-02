@@ -181,6 +181,7 @@ h2 { font-size: 28px; letter-spacing: -.04em; }
 :root.dark .settings-form input { background: #211f1f; color: var(--ink); }
 @media (max-width: 560px) {
   .app-shell { width: min(100% - 28px, 1080px); padding-top: 19px; }
+  .topbar { margin-bottom: 16px; }
   .mode-tabs { gap: 2px; padding: 14px 5px; }
   .mode-tab { flex: 1 1 0; min-width: 0; padding: 8px 4px; font-size: 12px; }
   .timer-area { padding: 38px 16px 42px; }
