@@ -60,7 +60,7 @@ h1 { font-family: "Playfair Display", Georgia, serif; font-size: clamp(42px, 6vw
 .pomodoro-total { display: flex; align-items: center; gap: 8px; margin-top: 30px; color: var(--muted); font-size: 14px; }
 .pomodoro-total strong { color: var(--ink); font-size: 16px; }
 .tasks-section { margin: 68px 0 0; }
-.footer { margin-top: 64px; color: var(--muted); font-size: 16px; font-weight: 600; text-align: center; }
+.footer { margin-top: 64px; color: var(--muted); font-size: 20px; font-weight: 600; text-align: center; }
 .section-heading { align-items: end; margin-bottom: 22px; }
 h2 { font-size: 28px; letter-spacing: -.04em; }
 .task-count { border-radius: 20px; padding: 7px 12px; background: #dfd1c9; color: var(--muted); font-size: 14px; font-weight: 700; }
