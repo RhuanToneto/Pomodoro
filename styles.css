@@ -114,33 +114,31 @@ h2 { font-size: 28px; letter-spacing: -.04em; }
 
 @media (min-width: 900px) {
   body { min-height: 100vh; }
-  .app-shell { width: min(calc(100% - 96px), 1180px); padding: 32px 0 46px; }
+  .app-shell { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(360px, .65fr); grid-template-rows: auto minmax(0, 1fr) auto; gap: 30px 34px; width: min(calc(100% - 120px), 1620px); min-height: 100vh; padding: 34px 0 30px; }
+  .topbar, .footer { grid-column: 1 / -1; }
   .topbar { gap: 18px; }
   .icon-button { width: 58px; height: 58px; }
   .icon-button svg { width: 28px; }
-  .hero { padding: 58px 0 42px; }
-  h1 { font-size: clamp(58px, 5vw, 78px); }
-  .subtitle { font-size: 20px; }
-  .timer-card { min-height: 0; }
-  .mode-tabs { padding: 20px; }
-  .mode-tab { padding: 13px 25px; font-size: 17px; }
-  .timer-area { padding: 38px 40px 42px; }
-  .timer-ring { width: min(30vw, 360px); height: min(30vw, 360px); }
+  .timer-card { min-height: 0; height: 100%; }
+  .mode-tabs { padding: 24px; }
+  .mode-tab { padding: 14px 28px; font-size: 17px; }
+  .timer-area { justify-content: center; height: calc(100% - 78px); padding: 34px 40px 42px; }
+  .timer-ring { width: min(30vw, 430px); height: min(30vw, 430px); }
   .timer-ring::before { inset: 11px; }
-  .timer-label, .timer-round { font-size: 15px; }
-  .timer-display { font-size: clamp(72px, 7vw, 98px); }
-  .timer-actions { margin-top: 30px; }
-  .primary-button { min-width: 190px; padding: 17px 28px; font-size: 16px; }
-  .reset-button { min-height: 56px; padding: 0 24px; font-size: 16px; }
-  .pomodoro-total { margin-top: 24px; font-size: 15px; }
+  .timer-label, .timer-round { font-size: 16px; }
+  .timer-display { font-size: clamp(78px, 7vw, 112px); }
+  .timer-actions { margin-top: 38px; }
+  .primary-button { min-width: 210px; padding: 19px 30px; font-size: 17px; }
+  .reset-button { min-height: 62px; padding: 0 28px; font-size: 17px; }
+  .pomodoro-total { margin-top: 28px; font-size: 16px; }
   .pomodoro-total strong { font-size: 18px; }
-  .tasks-section { margin-top: 76px; }
+  .tasks-section { display: flex; flex-direction: column; justify-content: center; min-width: 0; margin: 0; padding: 42px; border: 1px solid rgba(216, 201, 192, .8); border-radius: 30px; background: var(--paper); box-shadow: var(--shadow); }
   h2 { font-size: 32px; }
   .task-count { padding: 8px 14px; font-size: 15px; }
   .task-form input { padding: 21px 24px; font-size: 18px; }
   .task-form button { width: 68px; font-size: 34px; }
   .empty-state { font-size: 16px; }
-  .footer { margin-top: 72px; }
+  .footer { margin-top: 0; }
   .settings-dialog { width: min(calc(100% - 80px), 620px); padding: 44px; }
   .history-dialog { width: min(calc(100% - 80px), 740px); padding: 44px; }
   .dialog-heading { margin-bottom: 36px; }
