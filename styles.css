@@ -114,8 +114,8 @@ h2 { font-size: 28px; letter-spacing: -.04em; }
 
 @media (min-width: 900px) {
   body { min-height: 100vh; overflow: hidden; }
-  .app-shell { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(360px, .65fr); grid-template-rows: auto minmax(0, 1fr) auto; gap: 30px 34px; width: min(calc(100% - 120px), 1620px); height: 100vh; min-height: 0; padding: 34px 0 30px; }
-  .topbar, .footer { grid-column: 1 / -1; }
+  .app-shell { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(360px, .65fr); grid-template-rows: auto minmax(0, 1fr); gap: 30px 34px; width: min(calc(100% - 120px), 1620px); height: 100vh; min-height: 0; padding: 34px 0 58px; }
+  .topbar { grid-column: 1 / -1; }
   .topbar { gap: 18px; }
   .icon-button { width: 58px; height: 58px; }
   .icon-button svg { width: 28px; }
@@ -138,7 +138,7 @@ h2 { font-size: 28px; letter-spacing: -.04em; }
   .task-form input { padding: 21px 24px; font-size: 18px; }
   .task-form button { width: 68px; font-size: 34px; }
   .empty-state { font-size: 16px; }
-  .footer { margin-top: 0; }
+  .footer { position: fixed; right: 0; bottom: 18px; left: 0; z-index: 2; margin: 0; }
   .settings-dialog { width: min(calc(100% - 80px), 620px); padding: 44px; }
   .history-dialog { width: min(calc(100% - 80px), 740px); padding: 44px; }
   .dialog-heading { margin-bottom: 36px; }
