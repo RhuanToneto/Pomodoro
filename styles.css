@@ -181,16 +181,24 @@ h2 { font-size: 28px; letter-spacing: -.04em; }
 :root.dark .settings-form input { background: #211f1f; color: var(--ink); }
 @media (max-width: 560px) {
   .app-shell { width: min(100% - 28px, 1080px); padding-top: 19px; }
-  .hero { padding: 48px 0 28px; }
-  h1 { font-size: clamp(38px, 11vw, 52px); }
-  .subtitle { font-size: 16px; }
   .mode-tabs { gap: 2px; padding: 14px 5px; }
-  .mode-tab { padding: 8px 10px; font-size: 12px; }
+  .mode-tab { flex: 1 1 0; min-width: 0; padding: 8px 4px; font-size: 12px; }
   .timer-area { padding: 38px 16px 42px; }
   .timer-ring { width: min(78vw, 320px); height: min(78vw, 320px); }
   .timer-actions { gap: 12px; margin-top: 30px; }
-  .primary-button { min-width: 150px; padding: 15px 20px; }
-  .reset-button { min-height: 50px; padding: 0 15px; }
+  .primary-button { min-width: 0; flex: 1; padding: 15px 12px; }
+  .reset-button { min-height: 50px; padding: 0 12px; }
   .tasks-section { margin-top: 38px; }
-  .settings-dialog, .history-dialog { padding: 26px; }
+  .settings-dialog, .history-dialog { width: min(calc(100% - 28px), 520px); padding: 26px; overflow-x: hidden; }
+  .settings-form label { flex-direction: column; align-items: stretch; gap: 12px; }
+  .duration-inputs { align-self: flex-end; }
+  .history-times { gap: 10px; }
+}
+@media (max-width: 360px) {
+  .settings-dialog, .history-dialog { padding: 18px; }
+  .dialog-heading { gap: 8px; }
+  .dialog-heading h2 { font-size: 24px; }
+  .settings-form input { width: 54px; padding: 7px 4px; font-size: 14px; }
+  .duration-inputs { gap: 4px; }
+  .duration-inputs b { margin-right: 3px; font-size: 11px; }
 }
