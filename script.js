@@ -61,8 +61,8 @@ let tasks = readStorage(STORAGE_KEYS.tasks, []);
 let mode = "pomodoro";
 let remaining = modes[mode].duration;
 let intervalId = null;
-let session = Number(localStorage.getItem(STORAGE_KEYS.session) || 1);
 let completedSessions = Number(localStorage.getItem(STORAGE_KEYS.completed) || 0);
+let session = getSessionNumber(completedSessions);
 let completedCycles = Number(localStorage.getItem(STORAGE_KEYS.cycles) || 0);
 let cycleHistory = readStorage(STORAGE_KEYS.history, []);
 let longBreakDue = localStorage.getItem(STORAGE_KEYS.longBreakDue) === "true";
@@ -112,6 +112,14 @@ function formatFocusDuration(seconds) {
   return `${parts.slice(0, -1).join(", ")} e ${parts[parts.length - 1]}`;
 }
 
+function getSessionNumber(totalCompletedSessions) {
+  return (totalCompletedSessions % 4) + 1;
+}
+
+function getShortBreakNumber(totalCompletedSessions) {
+  return totalCompletedSessions % 4 || 1;
+}
+
 function updateModeDurations() {
   modes.pomodoro.duration = settings.focus.minutes * 60 + settings.focus.seconds;
   modes.short.duration = settings.short.minutes * 60 + settings.short.seconds;
@@ -123,6 +131,7 @@ function renderTimer() {
   const total = modes[mode].duration;
   const time = formatTime(remaining);
   completedCycles = getCompletedCyclesToday();
+  session = getSessionNumber(completedSessions);
 
   elements.display.textContent = time;
   elements.display.dateTime = `PT${Math.floor(remaining / 60)}M${remaining % 60}S`;
@@ -203,7 +212,7 @@ function renderHistory() {
 
 function getRoundLabel() {
   if (mode === "pomodoro") return `Sessão ${session} de 4`;
-  if (mode === "short") return `Pausa curta ${((completedSessions - 1) % 3) + 1} de 3`;
+  if (mode === "short") return `Pausa curta ${getShortBreakNumber(completedSessions)} de 3`;
   return "Pausa longa 1 de 1";
 }
 
@@ -240,7 +249,7 @@ function finishTimer() {
     completedSessions += 1;
     const isLongBreak = completedSessions % 4 === 0;
     longBreakDue = isLongBreak;
-    session = isLongBreak ? 1 : session + 1;
+    session = getSessionNumber(completedSessions);
     save(STORAGE_KEYS.completed, completedSessions);
     save(STORAGE_KEYS.session, session);
     localStorage.setItem(STORAGE_KEYS.longBreakDue, longBreakDue);
