@@ -47,7 +47,7 @@ h1 { font-family: "Playfair Display", Georgia, serif; font-size: clamp(42px, 6vw
 .timer-inner { z-index: 1; text-align: center; }
 .timer-label, .timer-round { display: block; color: var(--muted); font-size: 14px; }
 .timer-label { margin-bottom: 9px; font-weight: 600; }
-.timer-display { display: block; color: var(--ink); font-size: clamp(64px, 11vw, 92px); font-weight: 600; letter-spacing: -.08em; line-height: 1; }
+.timer-display { display: block; width: 5ch; margin-inline: auto; color: var(--ink); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(64px, 11vw, 92px); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; font-weight: 600; line-height: 1; }
 .timer-round { margin-top: 15px; }
 .timer-actions { display: flex; align-items: center; gap: 26px; margin-top: 42px; }
 .primary-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-width: 180px; border: 0; border-radius: 16px; padding: 17px 28px; background: var(--accent); box-shadow: 0 8px 18px rgba(150, 80, 67, .22); color: #fffaf7; font-size: 15px; font-weight: 700; transition: transform .2s, background .2s; }
