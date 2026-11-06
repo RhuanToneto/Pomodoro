@@ -24,7 +24,7 @@ Um temporizador Pomodoro responsivo, criado com HTML, CSS e JavaScript, para aju
 - Selecione o modo de foco ou pausa e use **Começar**, **Pausar** e **Reiniciar** para controlar a sessão.
 - Adicione tarefas no campo **Nova tarefa** e marque-as ao concluí-las.
 - Abra **Configurações** para ajustar as durações ou restaurar os padrões.
-- Consulte o histórico pelo botão no canto superior esquerdo.
 - Alterne entre os modos claro e escuro pelo botão ao lado.
+- Consulte o histórico pelo botão no canto superior esquerdo.
 
 Ao iniciar uma sessão, o navegador pode solicitar permissão para enviar notificações. O som de conclusão depende do suporte de áudio do navegador.
